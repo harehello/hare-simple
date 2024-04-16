@@ -1,0 +1,50 @@
+server:
+  port: 8090
+  tomcat:
+    # tomcat的URI编码
+    uri-encoding: UTF-8
+    # 连接数满后的排队数，默认为100
+    accept-count: 1000
+    threads:
+      # tomcat最大线程数，默认为200
+      max: 1000
+      # Tomcat启动初始化的线程数，默认值10
+      min-spare: 100
+  compression:
+    enabled: true
+    mime-types: text/css, text/javascript, application/javascript, application/x-font-ttf
+
+spring:
+  application:
+    name: hare-simple
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/children-program?serverTimezone=GMT%2B8&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: java123
+
+  #  sql:
+#      init:
+#        schema-locations: classpath:db/schema-h2.sql
+#        data-locations: classpath:db/data-h2.sql
+#        mode: always
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    locale: zh_CN
+    time-zone: GMT+8
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          audiences:
+
+jwt:
+  private.key: classpath:key/private.key
+  public.key: classpath:key/public.key
+  # 10小时
+  expire-time: 360000
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
