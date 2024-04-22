@@ -67,8 +67,8 @@ public class SecurityConfiguration {
                 )
                 // 不能不设置或设置为disable，设置默认会按照WebMvcConfigurer的规则生效
                 .cors(Customizer.withDefaults())
-                .csrf().disable()
-                .httpBasic().disable()
+                .csrf((csrf) -> csrf.ignoringAntMatchers("/token"))
+                .httpBasic(Customizer.withDefaults())
                 .oauth2ResourceServer((a) -> a.jwt().jwtAuthenticationConverter(jwtAuthenticationConverter()))
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling((exceptions) -> exceptions
