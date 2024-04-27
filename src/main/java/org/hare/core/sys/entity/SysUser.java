@@ -26,6 +26,7 @@ public class SysUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @JsonIgnore
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 

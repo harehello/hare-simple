@@ -9,6 +9,11 @@ public class Constants {
      * 用户默认密码
      */
     public static final String DEFAULT_PASSWORD = "123456";
+    /**
+     * 登录错误消息
+     */
+    public static final String LOGIN_ERROR_MSG = "用户名或密码错误";
+
 
     /**
      * 系统管理员账号ID

@@ -5,17 +5,19 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.hare.common.constant.Constants;
+import org.hare.core.sys.dto.LoginUserResponse;
 import org.hare.core.sys.dto.PasswordRequest;
 import org.hare.core.sys.entity.SysUser;
 import org.hare.core.sys.service.SysUserService;
 import org.hare.framework.security.util.SecurityContextUtils;
 import org.hare.framework.web.domain.R;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * <p>
@@ -55,22 +57,6 @@ public class SysUserController {
     }
 
     /**
-     * 修改学生信息
-     *
-     * @return R
-     */
-    @PutMapping("/student")
-    public R putStudent(@RequestBody SysUser body) {
-        SysUser user = service.getById(body.getId());
-        user.setNickname(body.getNickname());
-        user.setPhone(body.getPhone());
-        user.setAge(body.getAge());
-        user.setSex(body.getSex());
-        service.updateById(user);
-        return R.success();
-    }
-
-    /**
      * 修改密码
      *
      * @return R
@@ -94,17 +80,6 @@ public class SysUserController {
     }
 
     /**
-     * 调班
-     *
-     * @return R
-     */
-    @PutMapping("/class")
-    public R putClass(@RequestBody SysUser body) {
-        service.updateClass(body);
-        return R.success();
-    }
-
-    /**
      * 批量删除
      *
      * @param ids
@@ -120,13 +95,11 @@ public class SysUserController {
      * 用户信息
      * @return
      */
-    @GetMapping(value = { "/info", "/info/{userId}" })
-    public R info(@PathVariable(value = "userId", required = false) Long userId) {
-        if (Objects.isNull(userId)) {
-            userId = SecurityContextUtils.getUserId();
-        }
+    @GetMapping(value = { "/info"})
+    public R info(Authentication authentication) {
+        long userId = Long.parseLong(authentication.getName());
         SysUser user = service.getById(userId);
-        return R.success(user);
+        return R.success(new LoginUserResponse(user, authentication.getAuthorities()));
     }
 
 

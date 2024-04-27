@@ -15,34 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 public class SysLoginController {
-
-//    private final JwtService jwtService;
-//    private final AuthenticationManager authenticationManager;
     private final SysLoginService loginService;
-
-//    /**
-//     * 登录
-//     * @param loginBodyDTO
-//     * @return
-//     */
-//    @PostMapping("/login")
-//    public R login(@RequestBody LoginRequest loginBodyDTO, HttpServletRequest request) {
-//
-//        UsernamePasswordAuthenticationToken authenticationToken =
-//                new UsernamePasswordAuthenticationToken(loginBodyDTO.getUsername(), loginBodyDTO.getPassword());
-//        Authentication authentication = authenticationManager.authenticate(authenticationToken);
-//        LoginUserDTO loginUserDTO = (LoginUserDTO) authentication.getPrincipal();
-//
-//        Long userId = loginUserDTO.getUser().getId();
-//        String role = loginUserDTO.getUser().getRole();
-//        String token = jwtService.createToken(userId, loginUserDTO.getUsername(), role);
-//
-//        Map<String, Object> response = new HashMap<String, Object>(3);
-//        response.put(SecurityUtils.TOKEN, token);
-//        response.put("user", loginUserDTO.getUser());
-//        response.put("authorities", loginUserDTO.getAuthorities());
-//        return R.success(response);
-//    }
 
 
     /**
