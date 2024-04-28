@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.hare.core.sys.dto.LoginRequest;
 import org.hare.core.sys.service.SysLoginService;
 import org.hare.framework.web.domain.R;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +27,18 @@ public class SysLoginController {
     @PostMapping("/token")
     public R token(@RequestBody LoginRequest loginRequest) {
         return R.success(loginService.token(loginRequest));
+    }
+
+    /**
+     * 退出
+     * @return
+     */
+    @GetMapping("/logout")
+    public R logout() {
+        // do something in the future
+
+
+        return R.success();
     }
 
 }
