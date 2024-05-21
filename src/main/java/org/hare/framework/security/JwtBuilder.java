@@ -26,16 +26,13 @@ public class JwtBuilder {
      * {@link JwtGrantedAuthoritiesConverter#convert}
      */
     private static final String WELL_KNOWN_AUTHORITIES_CLAIM_NAMES = "scope";
-
-
+    private final JwtEncoder jwtEncoder;
+    private final JwtDecoder jwtDecoder;
     /**
      * 过期时间（秒）
      */
     @Value("${jwt.expire-time}")
     private Long expireTime;
-
-    private final JwtEncoder jwtEncoder;
-    private final JwtDecoder jwtDecoder;
 
     public JwtBuilder(JwtEncoder jwtEncoder, JwtDecoder jwtDecoder) {
         this.jwtEncoder = jwtEncoder;
@@ -44,11 +41,12 @@ public class JwtBuilder {
 
     /**
      * 根据角色构建jwt令牌，authorities要使用 " "分割，参考 {@link JwtGrantedAuthoritiesConverter#getAuthorities}
-     * @param userId 用户主键
+     *
+     * @param username    用户名
      * @param authorities 用户权限或角色
      * @return jwt令牌
      */
-    public String build(Long userId, Collection<? extends String> authorities) {
+    public String build(String username, Collection<? extends String> authorities) {
 
         String scope = String.join(" ", authorities);
 
@@ -58,7 +56,7 @@ public class JwtBuilder {
                 .issuer("self")
                 .issuedAt(now)
                 .expiresAt(now.plusSeconds(expireTime))
-                .subject(userId.toString())
+                .subject(username)
                 .claim(WELL_KNOWN_AUTHORITIES_CLAIM_NAMES, scope)
                 .build();
 
@@ -68,6 +66,7 @@ public class JwtBuilder {
 
     /**
      * 从令牌中获取数据声明
+     *
      * @param token 令牌
      * @return 数据声明
      */
@@ -77,6 +76,7 @@ public class JwtBuilder {
 
     /**
      * 从令牌中获取主体数据
+     *
      * @param token 牌
      * @return 主体数据
      */

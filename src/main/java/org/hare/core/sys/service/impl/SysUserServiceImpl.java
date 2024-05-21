@@ -101,9 +101,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public boolean updatePassword(String pw, String rawPassword, Long id) {
+    public boolean updatePassword(String pw, String rawPassword, String username) {
 
-        SysUser user = getById(id);
+        SysUser user = findByUsername(username);
         boolean matches = passwordEncoder.matches(rawPassword, user.getPassword());
         if (!matches) {
             throw new BaseException("原密码不正确");
@@ -114,7 +114,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
         return update(new UpdateWrapper<SysUser>().lambda()
                 .set(SysUser::getPassword, pw)
-                .eq(SysUser::getId, id));
+                .eq(SysUser::getId, user.getId()));
     }
 
     @Override

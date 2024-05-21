@@ -21,10 +21,10 @@ public interface SysUserService extends IService<SysUser> {
      *
      * @param pw 新密码
      * @param rawPassword 原密码
-     * @param id
+     * @param username
      * @return
      */
-    boolean updatePassword(String pw, String rawPassword, Long id);
+    boolean updatePassword(String pw, String rawPassword, String username);
 
     /**
      * 根据id重置密码

@@ -56,7 +56,7 @@ public class SysLoginServiceImpl implements SysLoginService {
             throw new BaseException(Constants.LOGIN_ERROR_MSG);
         }
 
-        return jwtBuilder.build(sysUser.getId(), Collections.singletonList(sysUser.getRole()));
+        return jwtBuilder.build(sysUser.getUsername(), Collections.singletonList(sysUser.getRole()));
     }
 
 }

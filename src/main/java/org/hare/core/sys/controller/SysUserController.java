@@ -9,15 +9,13 @@ import org.hare.core.sys.dto.LoginUserResponse;
 import org.hare.core.sys.dto.PasswordRequest;
 import org.hare.core.sys.entity.SysUser;
 import org.hare.core.sys.service.SysUserService;
-import org.hare.framework.security.util.SecurityContextUtils;
 import org.hare.framework.web.domain.R;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * <p>
@@ -62,9 +60,10 @@ public class SysUserController {
      * @return R
      */
     @PutMapping("/pw")
-    public R putpw(@RequestBody PasswordRequest body) {
-        Long currUserid = SecurityContextUtils.getUserId();
-        service.updatePassword(body.getNewPassword(), body.getRawPassword(), currUserid);
+    public R putpw(@RequestBody PasswordRequest body, Authentication authentication) {
+        // 当前登录用户
+        final String username = authentication.getName();
+        service.updatePassword(body.getNewPassword(), body.getRawPassword(), username);
         return R.success();
     }
 
