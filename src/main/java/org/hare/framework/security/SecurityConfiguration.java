@@ -71,10 +71,6 @@ public class SecurityConfiguration {
                 .httpBasic(Customizer.withDefaults())
                 .oauth2ResourceServer((a) -> a.jwt().jwtAuthenticationConverter(jwtAuthenticationConverter()))
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .exceptionHandling((exceptions) -> exceptions
-                        .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
-                        .accessDeniedHandler(new JwtAccessDeniedHandler())
-                )
                 .logout((logout) -> logout.logoutSuccessHandler(new LogoutSuccessHandlerImpl()));
         return http.build();
     }
@@ -95,10 +91,6 @@ public class SecurityConfiguration {
         JWKSource<SecurityContext> jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
         return new NimbusJwtEncoder(jwks);
     }
-//    @Bean
-//    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-//        return authenticationConfiguration.getAuthenticationManager();
-//    }
 
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
