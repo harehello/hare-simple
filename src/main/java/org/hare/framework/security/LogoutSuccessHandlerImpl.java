@@ -16,10 +16,8 @@ import java.io.IOException;
  */
 public class LogoutSuccessHandlerImpl implements LogoutSuccessHandler {
 
-
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");
         new ObjectMapper().writeValue(response.getWriter(), R.success());
