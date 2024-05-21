@@ -6,24 +6,15 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.hare.common.constant.Constants;
-import org.hare.common.utils.StringUtils;
-import org.hare.core.sys.entity.SysClass;
 import org.hare.core.sys.entity.SysUser;
-import org.hare.core.sys.mapper.SysClassMapper;
 import org.hare.core.sys.mapper.SysUserMapper;
-import org.hare.core.sys.service.SysUserClassService;
 import org.hare.core.sys.service.SysUserService;
 import org.hare.framework.exception.BaseException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
-import org.springframework.util.CollectionUtils;
-
-import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -37,10 +28,7 @@ import java.util.stream.Collectors;
 @Service
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
 
-    private final SysClassMapper classMapper;
-    private final SysUserClassService userClassService;
     private final PasswordEncoder passwordEncoder;
-
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -127,38 +115,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 .eq(SysUser::getId, user.getId()));
     }
 
-    @Transactional(rollbackFor = {Exception.class})
-    @Override
-    public boolean updateClass(SysUser entity) {
-        userCannotUpdate(entity);
-
-        List<Long> classIds = entity.getClassIds();
-        // 保存班级关系
-        userClassService.save(entity.getId(), classIds);
-
-        // 保存班级快照
-        return update(new LambdaUpdateWrapper<SysUser>()
-                .set(SysUser::getClassName, getClassName(classIds))
-                .eq(SysUser::getId, entity.getId()));
-    }
-
     @Override
     public SysUser findByUsername(String usernmae) {
 
         return getOne(new LambdaQueryWrapper<SysUser>().eq(SysUser::getUsername, usernmae));
-    }
-
-
-    /**
-     * 班级快照赋值
-     * @param classIds
-     */
-    private String getClassName(List<Long> classIds) {
-        String name = null;
-        if (!CollectionUtils.isEmpty(classIds)) {
-            Set<String> className = classMapper.selectBatchIds(classIds).stream().map(SysClass::getName).collect(Collectors.toSet());
-        }
-        return name;
     }
 
     /**

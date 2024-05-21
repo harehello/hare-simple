@@ -35,13 +35,6 @@ public interface SysUserService extends IService<SysUser> {
     boolean resetPassword(Long id);
 
     /**
-     * 调班
-     * @param entity
-     * @return
-     */
-    boolean updateClass(SysUser entity);
-
-    /**
      * 根据用户名查询
      * @param usernmae
      * @return
