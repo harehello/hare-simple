@@ -96,8 +96,8 @@ public class SysUserController {
      */
     @GetMapping(value = { "/info"})
     public R info(Authentication authentication) {
-        long userId = Long.parseLong(authentication.getName());
-        SysUser user = service.getById(userId);
+        String username = authentication.getName();
+        SysUser user = service.findByUsername(username);
         return R.success(new LoginUserResponse(user, authentication.getAuthorities()));
     }
 
@@ -107,7 +107,7 @@ public class SysUserController {
      *
      * @return R
      */
-    @PreAuthorize("hasAuthority('scope1')")
+    @PreAuthorize("hasRole('admin')")
     @GetMapping("/page")
     public R page(Page<SysUser> page, SysUser query) {
 
@@ -136,11 +136,10 @@ public class SysUserController {
     private LambdaQueryWrapper<SysUser> wrapper(SysUser query) {
 
         return new LambdaQueryWrapper<SysUser>()
-                .ne(SysUser::getId, Constants.USER_SYSTEM_ID)// 不查询管理员
+                // 不查询管理员
+                .ne(SysUser::getId, Constants.USER_SYSTEM_ID)
                 .eq(StringUtils.isNotBlank(query.getRole()), SysUser::getRole, query.getRole())
                 .like(StringUtils.isNotBlank(query.getNickname()), SysUser::getNickname, query.getNickname())
-                .likeRight(StringUtils.isNotBlank(query.getNumber()), SysUser::getNumber, query.getNumber())
-                .like(StringUtils.isNotBlank(query.getClassName()), SysUser::getClassName, query.getClassName())
                 .orderByDesc(SysUser::getId);
     }
 

@@ -33,21 +33,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean save(SysUser entity) {
-        // 用户名就是手机号
-        entity.setUsername(entity.getPhone());
-        if ("student".equals(entity.getRole())) {
-            // 学生学号是用户账号
-            entity.setUsername(entity.getNumber());
-        }
 
         // 用户名是否存在
         SysUser target = findByUsername(entity.getUsername());
         if (Objects.nonNull(target)) {
             throw new BaseException("用户名已存在");
         }
-
-        // 默认班级无
-        entity.setClassName(Constants.NONE);
         // 默认密码
         entity.setPassword(getDefaultPassword());
 
@@ -60,13 +51,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
         userCannotUpdate(entity);
 
-        // 用户名就是手机号
-        entity.setUsername(entity.getPhone());
-        if ("student".equals(entity.getRole())) {
-            // 学生学号是用户账号
-            entity.setUsername(entity.getNumber());
-        }
-
         // 用户名是否存在 如果用户名已存在切不是当前用户代表重复
         SysUser target = findByUsername(entity.getUsername());
         if (Objects.nonNull(target) && !entity.getId().equals(target.getId())) {
@@ -77,13 +61,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 .eq(SysUser::getId, entity.getId())
                 .set(Objects.isNull(target), SysUser::getUsername, entity.getUsername())
                 .set(SysUser::getPhone, entity.getPhone())
-                .set(SysUser::getNumber, entity.getNumber())
                 .set(SysUser::getAge, entity.getAge())
                 .set(SysUser::getSex, entity.getSex())
                 .set(SysUser::getNickname, entity.getNickname())
                 .set(SysUser::getStatus, entity.getStatus())
-                .set(SysUser::getSubject, entity.getSubject())
-                .set(SysUser::getDescription, entity.getDescription())
                 .set(SysUser::getRemark, entity.getRemark())
         );
     }
