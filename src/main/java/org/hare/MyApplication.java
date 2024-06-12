@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MyApplication {
 
     public static void main(String[] args) {
-        final ConfigurableApplicationContext run = SpringApplication.run(MyApplication.class, args);
-        System.out.println(run);
+        SpringApplication.run(MyApplication.class, args);
     }
 
 }
