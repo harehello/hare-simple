@@ -59,12 +59,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
         return update(new LambdaUpdateWrapper<SysUser>()
                 .eq(SysUser::getId, entity.getId())
-                .set(Objects.isNull(target), SysUser::getUsername, entity.getUsername())
+                .set(SysUser::getUsername, entity.getUsername())
                 .set(SysUser::getPhone, entity.getPhone())
                 .set(SysUser::getAge, entity.getAge())
                 .set(SysUser::getSex, entity.getSex())
                 .set(SysUser::getNickname, entity.getNickname())
                 .set(SysUser::getStatus, entity.getStatus())
+                .set(SysUser::getRole, entity.getRole())
                 .set(SysUser::getRemark, entity.getRemark())
         );
     }

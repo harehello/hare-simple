@@ -1,6 +1,7 @@
 package org.hare.core.sys.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,7 @@ public class SysUserController {
      *
      * @return R
      */
+    @PreAuthorize("hasRole('admin')")
     @PostMapping
     public R post(@RequestBody SysUser body) {
         service.save(body);
@@ -48,6 +50,7 @@ public class SysUserController {
      *
      * @return R
      */
+    @PreAuthorize("hasRole('admin')")
     @PutMapping
     public R put(@RequestBody SysUser body) {
         service.updateById(body);
@@ -84,6 +87,7 @@ public class SysUserController {
      * @param ids
      * @return R
      */
+    @PreAuthorize("hasRole('admin')")
     @DeleteMapping
     public R delete(@RequestBody Long[] ids) {
         service.removeBatchByIds(Arrays.asList(ids));
@@ -99,6 +103,25 @@ public class SysUserController {
         String username = authentication.getName();
         SysUser user = service.findByUsername(username);
         return R.success(new LoginUserResponse(user, authentication.getAuthorities()));
+    }
+    /**
+     * 用户修改自己的信息
+     * @return
+     */
+    @PutMapping(value =  "/info")
+    public R putinfo(Authentication authentication, @RequestBody SysUser body) {
+        String username = authentication.getName();
+        SysUser user = service.findByUsername(username);
+
+        service.update(new LambdaUpdateWrapper<SysUser>()
+                .set(SysUser::getNickname, body.getNickname())
+                .set(SysUser::getPhone, body.getPhone())
+                .set(SysUser::getAge, body.getAge())
+                .set(SysUser::getSex, body.getSex())
+                .eq(SysUser::getId, user.getId())
+        );
+
+        return R.success();
     }
 
 
