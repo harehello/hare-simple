@@ -1,6 +1,8 @@
 # hare-simple
 ## 系统说明
-    hare后台管理系统系列中最轻量的一个版本，前后端分离开发，意在精简、轻便，使用Spring Boot + Mybatis Plus  + Spring Security + JWT适合作为后台管理系统的轻量级版本。
+    hare后台管理系统系列中最轻量的一个版本，前后端分离开发，意在精简、轻便，
+    使用Spring Boot + Mybatis Plus  + Spring Security + JWT适合作
+    为后台管理系统的轻量级版本。
 
 ## 核心依赖
 
